@@ -1,0 +1,39 @@
+<div class="ticket-information__wrapper" *ngIf="ticket$ | async as ticket">
+  <nz-card class="ticket-information" [nzTitle]="ticket.Title">
+  <!-- <div class="ticket-information" *ngIf="ticket$ | async as ticket"> -->
+    <!-- <pre *ngFor="let Article of ticket.Article">{{Article.Body}}</pre> -->
+    <!-- <nz-comment *ngFor="let Article of ticket.Article" [nzAuthor]="Article.FromRealname" [nzDatetime]="Article.CreateTime">
+      <nz-avatar
+        nz-comment-avatar
+        nzIcon="user"
+        [nzSrc]="Article.SenderType === 'agent' ? vk : user"
+      ></nz-avatar>
+      <nz-comment-content>
+        <p>
+          {{Article.Body}}
+        </p>
+      </nz-comment-content>
+    </nz-comment> -->
+    <nz-list>
+      <nz-list-item *ngFor="let Article of ticket.Article">
+        <nz-list-item-meta
+          [nzAvatar]="Article.SenderType === 'agent' ? vk : user"
+          [nzDescription]="Article.FromRealname"
+        >
+          <nz-list-item-meta-title>
+            <p class="ticket-information__message">
+              {{Article.Body}}
+            </p>
+          </nz-list-item-meta-title>
+        </nz-list-item-meta>
+      </nz-list-item>
+    </nz-list>
+  </nz-card>
+  <nz-card nzTitle="Информация по заявке" class="ticket-information__additional">
+    <div class="ticket-information__additional-item" *ngFor="let item of additionalInfoAttributesMap | keyvalue">
+      <span class="ticket-information__additional-item-caption">{{ item.key }}</span>
+      <span class="ticket-information__additional-item-value">{{ ticket[item.value] }}</span>
+    </div>
+  </nz-card>
+</div>
+ 

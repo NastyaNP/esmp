@@ -1,0 +1,39 @@
+<nz-table
+  #ticketsTable
+  nzShowPagination
+  nzShowSizeChanger
+  [nzFrontPagination]="false"
+  [nzData]="(tickets$ | async) ?? []"
+  [nzLoading]="loading"
+  [nzTotal]="(totalCount$ | async) ?? 0"
+  [nzPageIndex]="pageIndex"
+  [(nzPageSize)]="limit"
+  (nzQueryParams)="onQueryParamsChange($event)"
+>
+    <thead>
+        <tr>
+            <th nzColumnKey="TicketNumber">Номер заявки</th>
+            <th nzColumnKey="Priority" [nzSortFn]="true" [nzFilterFn]="true">Приоритет</th>
+            <th nzColumnKey="Type" [nzSortFn]="true" [nzFilterFn]="true">Тип</th>
+            <th nzColumnKey="State" [nzSortFn]="true" [nzFilterFn]="true">Состояние</th>
+            <th nzColumnKey="Age" [nzSortFn]="true">Возраст</th>
+            <th nzColumnKey="Created" [nzSortFn]="true">Создана</th>
+            <th nzColumnKey="Owner">Исполнитель</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let ticket of ticketsTable.data">
+            <td>
+                <a routerLink="/info" [queryParams]="{ TicketID: ticket.TicketID }">
+                    {{ ticket.TicketNumber }}
+                </a>
+            </td>
+            <td>{{ ticket.Priority }}</td>
+            <td>{{ ticket.Type }}</td>
+            <td>{{ ticket.State }}</td>
+            <td>{{ ticket.Created }}</td>
+            <td>{{ ticket.Created }}</td>
+            <td>{{ ticket.OwnerLastname }} {{ ticket.OwnerFirstname }}</td>
+        </tr>
+    </tbody>
+</nz-table>
