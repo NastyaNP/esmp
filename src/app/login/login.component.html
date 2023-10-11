@@ -1,0 +1,20 @@
+<div class="login-form__wrapper">
+    <form nz-form [formGroup]="validateForm" class="login-form" (ngSubmit)="submitForm()">
+        <nz-form-item>
+          <nz-form-control nzErrorTip="Пожалуйста, введите логин!">
+            <nz-input-group nzPrefixIcon="user">
+              <input type="text" nz-input formControlName="userName" placeholder="Логин" />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-control nzErrorTip="Пожалуйста, введите пароль!">
+            <nz-input-group nzPrefixIcon="lock">
+              <input type="password" nz-input formControlName="password" placeholder="Пароль" />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+        <button nz-button [nzLoading]="authorizationInProgress" class="login-form-button login-form-margin" [nzType]="'primary'">Войти</button>
+      </form>
+</div>
+
