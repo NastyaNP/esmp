@@ -42,12 +42,4 @@ export class EsmpApiService {
     )
   }
 
-  private getAuthParams(): Record<string, string> {
-    return {
-      UserLogin: "a.polezhaeva@corp.mail.ru",
-      Password: "cWglm0Yg",
-    };
-  }
-
-
 }
