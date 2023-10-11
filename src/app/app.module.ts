@@ -7,7 +7,7 @@ import { EsmpApiService } from './services/esmp-api.service';
 import { TicketInformationComponent } from './ticket-information/ticket-information.component';
 import { TicketsListComponent } from './tickets-list/tickets-list.component';
 import { AuthInterceptorProvider } from './interceptors/auth.interceptor';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NzPaginationModule } from "ng-zorro-antd/pagination";
 import { NzTableModule } from "ng-zorro-antd/table";
 import { NZ_I18N } from 'ng-zorro-antd/i18n';
@@ -19,6 +19,13 @@ import { NzCommentModule } from 'ng-zorro-antd/comment';
 import { NzListModule } from 'ng-zorro-antd/list';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzCardModule } from 'ng-zorro-antd/card';
+import { LoginComponent } from './login/login.component';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzMessageModule } from 'ng-zorro-antd/message';
+
+
 
 registerLocaleData(en);
 
@@ -26,20 +33,26 @@ registerLocaleData(en);
   declarations: [
     AppComponent,
     TicketInformationComponent,
-    TicketsListComponent
+    TicketsListComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
+    ReactiveFormsModule,
     NzPaginationModule,
     NzTableModule,
     BrowserAnimationsModule,
     NzCommentModule,
     NzAvatarModule,
     NzListModule,
-    NzCardModule
+    NzCardModule,
+    NzFormModule,
+    NzInputModule,
+    NzButtonModule,
+    NzMessageModule,
   ],
   providers: [EsmpApiService, AuthInterceptorProvider, { provide: NZ_I18N, useValue: en_US }],
   bootstrap: [AppComponent]

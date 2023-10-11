@@ -15,7 +15,6 @@ export class EsmpApiService {
     return this.httpClient.get<{ Ticket: [Ticket] }>('https://sm.support.mcs.mail.ru/otrs/nph-genericinterface.pl/Webservice/HelpMe/TicketGet', {
       params: {
         TicketID: id,
-        ...this.getAuthParams(),
       }
     }).pipe(
       map(({ Ticket: [ticket] }) => ticket),
@@ -23,9 +22,7 @@ export class EsmpApiService {
   }
 
   public getAllTicketsIds(options: Record<string, unknown>): Observable<string[]> {
-    return this.httpClient.post<{ TicketID: Ticket["TicketID"][] }>("https://sm.support.mcs.mail.ru/otrs/nph-genericinterface.pl/Webservice/HelpMe/Original/TicketSearch", options, {
-      params: this.getAuthParams()
-    }).pipe(
+    return this.httpClient.post<{ TicketID: Ticket["TicketID"][] }>("https://sm.support.mcs.mail.ru/otrs/nph-genericinterface.pl/Webservice/HelpMe/Original/TicketSearch", options).pipe(
       map(({ TicketID }) => TicketID)
     )
   }
@@ -39,19 +36,10 @@ export class EsmpApiService {
         Limit: limit,
         SortBy: "t.tn",
         OrderBy: "Down",
-        ...this.getAuthParams(),
       }
     }).pipe(
       map((obj) => Object.values(obj).flat())
     )
   }
-
-  private getAuthParams(): Record<string, string> {
-    return {
-      UserLogin: "",
-      Password: "",
-    };
-  }
-
 
 }
