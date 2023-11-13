@@ -24,6 +24,7 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzMessageModule } from 'ng-zorro-antd/message';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 
 
@@ -53,6 +54,7 @@ registerLocaleData(en);
     NzInputModule,
     NzButtonModule,
     NzMessageModule,
+    NzIconModule,
   ],
   providers: [EsmpApiService, AuthInterceptorProvider, { provide: NZ_I18N, useValue: en_US }],
   bootstrap: [AppComponent]

@@ -1,9 +1,8 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { EsmpApiService } from '../services/esmp-api.service';
 import { Ticket } from '../models/ticket';
-import { BehaviorSubject, Observable, combineLatest, concatMap, distinctUntilChanged, finalize, forkJoin, map, mergeMap, of, scan, shareReplay, startWith, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, combineLatest, concatMap, distinctUntilChanged, finalize, forkJoin, map, mergeMap, of, scan, shareReplay, startWith, switchMap, take, takeUntil, tap } from 'rxjs';
 import { Router } from '@angular/router';
-import { PageInfo } from '../models/page-info';
 import { NzTableQueryParams } from 'ng-zorro-antd/table';
 
 const DEFAULT_LIMIT = 10;
@@ -21,6 +20,9 @@ export class TicketsListComponent implements OnInit {
   public overOffset: number = 0;
   public pageIndex: number = 1;
   public loading: boolean = true;
+
+  public searchLoading: boolean = false;
+  public searchText: string = "";
 
   public tickets$: Observable<Ticket[]> = of([]);
   public ticketIds$: Observable<string[]> = of([]);
@@ -81,6 +83,34 @@ export class TicketsListComponent implements OnInit {
     this.offset$.next(pageIndex * this.limit);
   }
 
+  public onTicketSearch(searchValue: string): void {
+    if (!searchValue) {
+      return;
+    }
+
+    this.searchLoading = true;
+    this.esmpApiService.getAllTicketsIds({
+      "TicketNumber": searchValue
+    })
+      .pipe(
+        catchError((error) => {
+          console.error("Error when search tickets:", error);
+          return [];
+        }),
+        finalize(() => this.searchLoading = false),
+        take(1),
+      )
+      .subscribe((ticketsIds: string[]) => {
+        if (ticketsIds.length > 0) {
+          this.router.navigate(["/info"], {
+            queryParams: {
+              TicketID: ticketsIds[0]
+            }
+          })
+        }
+      })
+  }
+
   private loadTickets(params$: Observable<[string[], number]>): Observable<Ticket[]> {
     return params$.pipe(
       concatMap(([ticketIds, offset]: [string[], number]) => {
@@ -120,6 +150,7 @@ export class TicketsListComponent implements OnInit {
         "Type": ["Запрос на информацию", "Запрос на обслуживание", "Инцидент", "Не классифицирован"],
         "TypeIds": [50, 4, 2, 5],
         "StateIDs": [4, 15, 12, 2, 1, 94, 13, 55],
+        "TicketCreateTimeNewerDate": "2023-10-1 00:00:00",
         "OrderBy": "Up",
         "SortBy": "Age"
       }),
@@ -129,6 +160,7 @@ export class TicketsListComponent implements OnInit {
         "Type": ["Запрос на информацию", "Запрос на обслуживание", "Инцидент", "Не классифицирован"],
         "TypeIds": [50, 4, 2, 5],
         "StateIDs": [4, 15, 12, 2, 1, 94, 13, 55],
+        "TicketCreateTimeNewerDate": "2023-10-1 00:00:00",
         "OrderBy": "Up",
         "SortBy": "Age"
       })

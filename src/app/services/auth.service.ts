@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable, inject } from "@angular/core";
-import { BehaviorSubject, Observable, map } from "rxjs";
+import { Observable, ReplaySubject, map } from "rxjs";
 import { skipInterceptionHeader } from "../interceptors/auth.interceptor";
 import { Router } from "@angular/router";
 
@@ -12,11 +12,12 @@ const sessionStorageKey = "sessionId";
 export class AuthService {
     private readonly httpClient = inject(HttpClient);
     private readonly router = inject(Router);
-    private readonly isAuthorizedSubject$ = new BehaviorSubject<boolean>(false);
+    private readonly isAuthorizedSubject$ = new ReplaySubject<boolean>(1);
 
     public readonly isAuthorized$: Observable<boolean>;
 
     constructor() {
+        this.isAuthorizedSubject$.next(Boolean(this.getSessionId()));
         this.isAuthorized$ = this.isAuthorizedSubject$.asObservable();
     }
 
