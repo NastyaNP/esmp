@@ -1,4 +1,10 @@
 <div class="tickets-list">
+    <div class="tickets-list__logout">
+        <button nz-button nzType="primary" (click)="logout()">
+            <span nz-icon [nzIconfont]="'icon-tuichu'"></span>
+            Выйти
+          </button>
+    </div>
     <div class="tickets-list__search">
         <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
             <input type="text" nz-input role="search" [(ngModel)]="searchText" placeholder="Номер заявки">

@@ -4,6 +4,9 @@ import { Ticket } from '../models/ticket';
 import { BehaviorSubject, Observable, catchError, combineLatest, concatMap, distinctUntilChanged, finalize, forkJoin, map, mergeMap, of, scan, shareReplay, startWith, switchMap, take, takeUntil, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { NzTableQueryParams } from 'ng-zorro-antd/table';
+import { customerIds } from './customer-ids';
+import { NzIconService } from 'ng-zorro-antd/icon';
+import { AuthService } from '../services/auth.service';
 
 const DEFAULT_LIMIT = 10;
 
@@ -15,6 +18,7 @@ const DEFAULT_LIMIT = 10;
 export class TicketsListComponent implements OnInit {
   private readonly esmpApiService = inject(EsmpApiService);
   private readonly router = inject(Router);
+  private readonly authService = inject(AuthService);
 
   public limit: number = DEFAULT_LIMIT;
   public overOffset: number = 0;
@@ -35,6 +39,12 @@ export class TicketsListComponent implements OnInit {
   private exceptTicketIds$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
   private readonly offset$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
  
+  constructor(private iconService: NzIconService) {
+    this.iconService.fetchFromIconfont({
+      scriptUrl: 'https://at.alicdn.com/t/font_8d5l8fzk5b87iudi.js'
+    });
+  }
+
   public ngOnInit(): void {
     this.allTicketIds$ = this.getAllTicketsIds();
     this.exceptedTicketIds$ = this.exceptTicketIds$.pipe(
@@ -69,6 +79,10 @@ export class TicketsListComponent implements OnInit {
         finalize(() => this.loading = false),
       ))
     );
+  }
+
+  public logout(): void {
+    this.authService.logOut();
   }
 
   public onQueryParamsChange(params: NzTableQueryParams): void {
@@ -152,7 +166,8 @@ export class TicketsListComponent implements OnInit {
         "StateIDs": [4, 15, 12, 2, 1, 94, 13, 55],
         "TicketCreateTimeNewerDate": "2023-10-1 00:00:00",
         "OrderBy": "Up",
-        "SortBy": "Age"
+        "SortBy": "Age",
+        "CustomerID": customerIds
       }),
       this.esmpApiService.getAllTicketsIds({
         "Limit": 9999999999,
@@ -162,7 +177,8 @@ export class TicketsListComponent implements OnInit {
         "StateIDs": [4, 15, 12, 2, 1, 94, 13, 55],
         "TicketCreateTimeNewerDate": "2023-10-1 00:00:00",
         "OrderBy": "Up",
-        "SortBy": "Age"
+        "SortBy": "Age",
+        "CustomerID": customerIds
       })
     ]).pipe(
       map(([allIds, spamIds]: [string[], string[]])=> {

@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "esmp-client": {
+    "service-desk": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,9 +17,11 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/esmp-client",
+            "outputPath": "dist/service-desk",
             "index": "src/index.html",
             "main": "src/main.ts",
+            "baseHref": "/mc/"
+            "deployUrl": "/mc/"
             "polyfills": [
               "zone.js"
             ],
@@ -71,10 +73,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "esmp-client:build:production"
+              "browserTarget": "service-desk:build:production"
             },
             "development": {
-              "browserTarget": "esmp-client:build:development"
+              "browserTarget": "service-desk:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -82,7 +84,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "esmp-client:build"
+            "browserTarget": "service-desk:build"
           }
         },
         "test": {
