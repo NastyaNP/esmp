@@ -3,14 +3,28 @@
         <nz-form-item>
           <nz-form-control nzErrorTip="Пожалуйста, введите логин!">
             <nz-input-group nzPrefixIcon="user">
-              <input type="text" nz-input formControlName="userName" placeholder="Логин" />
+              <input 
+                type="email" 
+                name="email" 
+                nz-input 
+                formControlName="userName" 
+                placeholder="Логин" 
+                autocomplete="email"
+              />
             </nz-input-group>
           </nz-form-control>
         </nz-form-item>
         <nz-form-item>
           <nz-form-control nzErrorTip="Пожалуйста, введите пароль!">
             <nz-input-group nzPrefixIcon="lock">
-              <input type="password" nz-input formControlName="password" placeholder="Пароль" />
+              <input 
+                type="password" 
+                name="password" 
+                nz-input 
+                formControlName="password" 
+                placeholder="Пароль"
+                autocomplete="current-password"
+              />
             </nz-input-group>
           </nz-form-control>
         </nz-form-item>
