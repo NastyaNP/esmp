@@ -12,7 +12,7 @@ export class EsmpApiService {
   private httpClient = inject(HttpClient);
   
   public ticketGet(id: string): Observable<Ticket>{
-    return this.httpClient.get<{ Ticket: [Ticket] }>('https://sm.support.mcs.mail.ru/otrs/nph-genericinterface.pl/Webservice/HelpMe/TicketGet', {
+    return this.httpClient.get<{ Ticket: [Ticket] }>('https://sm.support.mcs.mail.ru/otrs/nph-genericinterface.pl/Webservice/ARMGS/TicketGet', {
       params: {
         TicketID: id,
       }
@@ -22,13 +22,13 @@ export class EsmpApiService {
   }
 
   public getAllTicketsIds(options: Record<string, unknown>): Observable<string[]> {
-    return this.httpClient.post<{ TicketID: Ticket["TicketID"][] }>("https://sm.support.mcs.mail.ru/otrs/nph-genericinterface.pl/Webservice/HelpMe/Original/TicketSearch", options).pipe(
+    return this.httpClient.post<{ TicketID: Ticket["TicketID"][] }>("https://sm.support.mcs.mail.ru/otrs/nph-genericinterface.pl/Webservice/ARMGS/Original/TicketSearch", options).pipe(
       map(({ TicketID }) => TicketID)
     )
   }
 
   public getCustomerTickets(limit: number, offset: number = 0, getCounters = false): Observable<Ticket[]> {
-    return this.httpClient.get<Record<string, Ticket[]>>(`https://sm.support.mcs.mail.ru/otrs/nph-genericinterface.pl/Webservice/HelpMe/TicketSearch?Types=Closed&Types=Rejected&Types=Public&Types=Active`, {
+    return this.httpClient.get<Record<string, Ticket[]>>(`https://sm.support.mcs.mail.ru/otrs/nph-genericinterface.pl/Webservice/ARMGS/TicketSearch?Types=Closed&Types=Rejected&Types=Public&Types=Active`, {
       params: {
         ...offset && { Offset: offset },
         CustomerLogin: "a.polezhaeva@corp.mail.ru",

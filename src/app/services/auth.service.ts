@@ -1,10 +1,15 @@
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http";
 import { Injectable, inject } from "@angular/core";
-import { Observable, ReplaySubject, map } from "rxjs";
+import { Observable, ReplaySubject, map, throwError } from "rxjs";
 import { skipInterceptionHeader } from "../interceptors/auth.interceptor";
 import { Router } from "@angular/router";
+import customersCredentials from "./customers-credentials.json";
 
 const sessionStorageKey = "sessionId";
+const agentCreds = {
+    login: "ARMGS@API",
+    password: "mS2Lem%IKCrw"
+}
 
 @Injectable({
     providedIn: "root"
@@ -22,9 +27,14 @@ export class AuthService {
     }
 
     public authorize(login: string, password: string): Observable<string> {
-        return this.httpClient.post<{ SessionMaxTime: string, SessionID: string }>("https://sm.support.mcs.mail.ru/otrs/nph-genericinterface.pl/Webservice/HelpMe/SessionCreate", {
-            UserLogin: login,
-            Password: password,
+        if (!customersCredentials.some(customerCreds => customerCreds.login === login && customerCreds.password === password)) {
+            return throwError(() => new HttpErrorResponse({
+                status: 401
+            }));
+        }
+        return this.httpClient.post<{ SessionMaxTime: string, SessionID: string }>("https://sm.support.mcs.mail.ru/otrs/nph-genericinterface.pl/Webservice/ARMGS/SessionCreate", {
+            UserLogin: agentCreds.login,
+            Password: agentCreds.password,
         }, {
             headers: new HttpHeaders({
                 [skipInterceptionHeader]: "true"
